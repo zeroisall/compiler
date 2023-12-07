@@ -14,8 +14,8 @@ enum etoken
 };
 
 // token struct
-struct token
+typedef struct token
 {
     int token;
     int intvalue;
-};
+} TOKEN;

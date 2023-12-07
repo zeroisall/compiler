@@ -1,0 +1,1 @@
+extern int scan(TOKEN *t);
