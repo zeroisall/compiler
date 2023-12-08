@@ -1,65 +1,30 @@
 #include "defs.h"
-#define extern_
-#include "data.h"
-#undef extern_
-#include "decl.h"
-#include <errno.h>
 
-//! 此main函数作为scan模块的测试函数
-//!  We will start with a language that has only five lexical elements
-
-static void init()
+void init()
 {
-    Line = 1;
-    Putback = '\n';
-}
-
-// Print out a usage if started incorrectly
-static void usage(char *prog)
-{
-    fprintf(stderr, "Usage: %s infile\n", prog);
-    exit(EXIT_FAILURE);
+    LineNum = 0;
+    pFile = NULL;
+    ptoken = NULL;
+    g_tokennum = 0;
+    
     return;
 }
 
-// List of printable tokens
-char *tokstr[] = {"+", "-", "*", "/", "intlit"};
-
-// Loop scanning in all the tokens in the input file.
-// Print out details of each token found.
-static void scanfile()
-{
-    struct token T;
-
-    while (scan(&T))
-    {
-        printf("Token %s", tokstr[T.token]);
-        if (T.token == T_INTLIT)
-            printf(", value %d", T.intvalue);
-        printf("\n");
-    }
-}
-static int skip(void)
-{
-    return 1;
-}
-
-int aaa=1;
-
 int main(int argc, char *argv[])
 {
+    // make sure the routine is compiled and run corretly
+    fprintf(stdout, "main running %s %s\n", __DATE__, __TIME__);
+
+    // funciton input check
     if (2 != argc)
     {
-        usage(argv[0]);
+        ERROR("invalid input para of func main\n");
     }
 
     init();
-    
-    if ((Infile = fopen(argv[1], "r")) == NULL)
-    {
-        fprintf(stderr, "Unable to open %s: %s\n", argv[1], strerror(errno));
-        exit(1);
-    }
-    scanfile();
+
+    // Test case1: 2 + 3 * 5 - 8 / 3
+    ScanFile(argv[1]);
+
     return 1;
 }
